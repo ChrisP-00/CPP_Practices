@@ -1,0 +1,61 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+// see page https://csdiary.tistory.com/2 for my references 
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C bulid for clang",
+            "command": "clang",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "presentation": {
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "C++ bulid for clang++",
+            "command": "clang++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "presentation": {
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "execute",
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
+            "group": "test",
+            "presentation": {
+                "clear": true
+            }
+        }
+    ]
+}
