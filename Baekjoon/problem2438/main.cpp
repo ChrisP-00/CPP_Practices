@@ -8,7 +8,7 @@ int main()
 
     cin >> stars;
 
-    for(int i = 0; i <= stars; ++i)
+    for(int i = 1; i <= stars; ++i)
     {
         for(int j = 0; j < i; ++j)
         {
