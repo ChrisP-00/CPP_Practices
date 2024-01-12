@@ -1,47 +1,54 @@
-#include <iostream>
-#include <string>
+// header file 'iostream' and header file 'cstdio' have different file memories 
+// `<iostream>` is part of C++ and provides a more modern and flexible approach to input/output through the stream concept.
+// `<cstdio>` is part of the C Standard Library and offers traditional C-style input/output using functions.
+
+// #include <iostream>
+#include <cstdio>
+#include <string.h>
 using namespace std;
 
-/*
-int WordChecker (string n);
+int WordChecker (char n []);
 
 int main()
 {
-    int words;
-    string input; 
+    int words = 0;
+    // string input;
+    char input[100]; 
     int count = 0;
 
-    cin >> words;
+    // cin >> words;
+    scanf("%d", &words);
 
    for(int i = 0; i < words; i++)
    {
-        cin >> input;
+        // cin >> input;
+        scanf("%s", input);
+        
         count += WordChecker(input);
    }
 
-    cout << count;
+    // cout << count;
+    printf("%d", count);
 
     return 0;
 }
 
-int WordChecker(string n)
+int WordChecker(char n [])
 {
     // reset array to false
     bool arr [26] = {false};
-    arr[0] = true;
 
-    int length = n.length();
+    // int length = n.length();
+    int length = strlen(n);
 
-    for(int i = 1; i < length; i++)
+    for(int i = 0; i < length; i++)
     {
-        // are letters continuous?  
         if((i > 0) && (n[i] == n[i-1]))
         {
             arr[n[i]-'a'] = true;
             continue;
         }
 
-        // has been checked? 
         if(arr[n[i]-'a'] == true)
         {
             return 0; 
@@ -51,43 +58,4 @@ int WordChecker(string n)
     }
 
     return 1;
-}
-*/
-
-int main() 
-{
-    int n; 
-    string word;
-    int count = 0;
-
-    cin >> n;
-
-    for(int i = 0; i < n; i++)
-    {
-        cin >> word;
-        int length = word.length();
-        
-        if(length < 3)
-        {
-            continue;
-        }
-
-        else
-        {
-            for(int j = 0; j < length-1; j++)
-            {
-                if(word[j] != word[j+1])
-                {
-                    if(word.find(word[j], j + 2) != string::npos)
-                    {
-                        count++;
-                        break;
-                    }
-                }
-
-            }
-        }
-
-    }
-    cout << n - count;
 }
