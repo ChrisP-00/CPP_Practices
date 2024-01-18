@@ -17,6 +17,7 @@ void cantor (int n)
     cantor(n - 1);
 
     blank = pow(3, n - 1);
+
     for(int idx = 0; idx < blank; idx++)
     {
         cout << ' ';
@@ -29,9 +30,11 @@ int main()
 {
     int n = 0; 
 
-    cin >> n; 
-
-    cantor(n);
+    while(cin >> n)
+    {
+        cantor(n);
+        cout << '\n';
+    }
 
     return 0;
 }
