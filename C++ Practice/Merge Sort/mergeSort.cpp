@@ -60,6 +60,10 @@ int main()
     
     cin >> size; 
 
+    // Resize vectors to the specified size
+    arrays.resize(size);
+    sortedArrays.resize(size);
+
     while(idx < size)
     {
         cin >> input;
