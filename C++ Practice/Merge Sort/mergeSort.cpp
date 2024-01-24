@@ -3,41 +3,48 @@
 
 using namespace std; 
 
-// divide arrays until they can no longer divided 
-// merge arrays into sorted subarray 
+// divide myArray until they can no longer divided 
+// merge myArray into sorted subarray 
 
-vector <int> arrays; 
-vector <int> sortedArrays;
+vector <int> myArray; 
+vector <int> tempArray;
 
-void merge(int start, int end)
+void merge(int start, int mid, int end)
 {
-    int mid = (start + end) / 2;
-    int sortedIndex = start;
-
+    int tempIndex = 0;
     int startPoint = start; 
     int midPoint = mid + 1;
 
     while(startPoint <= mid && midPoint <= end) 
     {
-        arrays[startPoint] <= arrays[midPoint] ? 
-        sortedArrays[sortedIndex++] = arrays[startPoint++] :
-        sortedArrays[sortedIndex++] = arrays[midPoint++];
+        myArray[startPoint] <= myArray[midPoint] ? 
+        tempArray[tempIndex++] = myArray[startPoint++] :
+        tempArray[tempIndex++] = myArray[midPoint++];
     }
 
     // left subarray is remained 
     while (startPoint <= mid)
     {
-        sortedArrays[sortedIndex++] = arrays[startPoint++];
+        tempArray[tempIndex++] = myArray[startPoint++];
     }
 
     while (midPoint <= end)
     {
-        sortedArrays[sortedIndex++] = arrays[midPoint++];
+        tempArray[tempIndex++] = myArray[midPoint++];
     }
 
     startPoint = start; 
+    midPoint = mid + 1;
+    tempIndex = 0;
 
-    std::copy(sortedArrays.begin() + start, sortedArrays.begin() + end + 1, arrays.begin() + start);
+    while(startPoint <= end)
+    {
+        myArray[startPoint++] = tempArray[tempIndex++];
+    }
+
+    cout << '\n';
+
+    // std::copy(tempArray.begin() + start, tempArray.begin() + end + 1, myArray.begin() + start);
 }
 
 
@@ -48,7 +55,7 @@ void mergeSort(int start, int end)
         int mid = (start + end) / 2;
         mergeSort(start, mid);
         mergeSort(mid + 1, end);
-        merge(start, end);
+        merge(start, mid, end);
     }
 }
 
@@ -61,22 +68,22 @@ int main()
     cin >> size; 
 
     // Resize vectors to the specified size
-    arrays.resize(size);
-    sortedArrays.resize(size);
+    myArray.resize(size);
+    tempArray.resize(size);
 
     while(idx < size)
     {
         cin >> input;
-        arrays[idx++] = input;
+        myArray[idx++] = input;
     }
 
-    mergeSort(0, arrays.size() - 1);
+    mergeSort(0, myArray.size() - 1);
 
     cout << "Merge Sort! : ";
 
-    for(int idx = 0; idx < arrays.size(); idx++)
+    for(int idx = 0; idx < myArray.size(); idx++)
     {
-        cout << arrays[idx] << ' ';
+        cout << myArray[idx] << ' ';
     }
 
     return 0;
