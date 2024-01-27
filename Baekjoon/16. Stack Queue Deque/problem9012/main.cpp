@@ -3,7 +3,7 @@
 #include <string>
 #include <queue>
 
-#define fastTime ios::sync_with_stdio(false), cin_tie(0);
+#define fastTime ios::sync_with_stdio(false), cin.tie(0);
 
 using namespace std;
 
@@ -38,6 +38,7 @@ int main()
                 if(myStack.empty())
                 {
                     isCorrect = false;
+                    break;
                 }
 
                 else
