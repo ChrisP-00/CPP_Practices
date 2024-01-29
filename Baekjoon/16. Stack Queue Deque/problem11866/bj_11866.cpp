@@ -10,7 +10,6 @@ int main()
     fastTime;
 
     queue <int> myQueue;
-    queue <int> tempQueue;
     queue <int> resultQueue;
 
     int n, k, idx = 0;
@@ -28,27 +27,18 @@ int main()
 
     while(!myQueue.empty())
     {
-        while(!myQueue.empty())
+        while(idx != k)
         {
-            if(idx == k)
-            {
-                resultQueue.push(myQueue.front());
-                myQueue.pop();
-                idx = 0;
-            }
-            else
-            {
-                tempQueue.push(myQueue.front());
-                myQueue.pop();
-            }
-
+            myQueue.push(myQueue.front());
+            myQueue.pop();
             idx++;
         }
 
-        if(!tempQueue.empty())
-        {
-            swap(myQueue, tempQueue);
-        }
+        idx = 1;
+
+        resultQueue.push(myQueue.front());
+        myQueue.pop();
+
     }
 
     cout << "<" << resultQueue.front();
