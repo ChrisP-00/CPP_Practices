@@ -10,7 +10,6 @@ int main()
 
     queue<int> myQueue;
     int n = 0;
-    int temp = 1;
     cin >> n;
 
     for(int idx = 1; idx <= n; idx++)
@@ -21,9 +20,8 @@ int main()
     while(myQueue.size() > 1)
     {
         myQueue.pop();
-        temp = myQueue.front();
+        myQueue.push(myQueue.front());
         myQueue.pop();
-        myQueue.push(temp);
     }
 
     cout << myQueue.front();
