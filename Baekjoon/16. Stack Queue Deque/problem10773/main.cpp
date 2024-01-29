@@ -1,11 +1,13 @@
 #include <iostream> 
 #include <stack>
-#define fastTime ios::sync_withstdio(false), cin.tie(0);
+#define fastTime ios::sync_with_stdio(false), cin.tie(0);
 
 using namespace std; 
 
 int main()
 {
+    fastTime;
+
     stack<int> myStack;
     int k, n, result = 0;
 
