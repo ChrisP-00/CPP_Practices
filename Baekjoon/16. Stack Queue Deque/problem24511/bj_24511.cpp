@@ -9,15 +9,16 @@ int main()
     fastTime;
 
     deque <int> myDeque;
-    bool checkQueueStack[100001] = {false};
-    int sequanceCount, num = 0;
+    vector <bool> checkQueueStack;
+    int sequanceCount, numA, num = 0;
 
     cin >> sequanceCount; 
 
     // 0 == queue, 1 == stack 
     for(int idx = 0; idx < sequanceCount; idx++)
     {
-        cin >> checkQueueStack[idx];
+        cin >> numA;
+        checkQueueStack.push_back(numA);
     }
 
     for(int idx = 0; idx < sequanceCount; idx++)
