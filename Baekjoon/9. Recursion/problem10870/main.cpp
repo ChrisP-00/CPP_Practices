@@ -2,8 +2,6 @@
 using namespace std;
 #define fastTime ios::sync_withstdio(false), cin.tie(0);
 
-
-
 int fibonacciNumber(int n)
 {
     if(n == 1)
@@ -18,7 +16,6 @@ int fibonacciNumber(int n)
 
     return fibonacciNumber(n - 1) + fibonacciNumber(n - 2);
 }
-
 
 
 int main()
