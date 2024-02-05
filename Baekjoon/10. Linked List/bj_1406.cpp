@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #define fastTime ios::sync_with_stdio(false), cin.tie(0);
 
@@ -9,10 +10,9 @@ struct node
 {
     char data;
     // address of node 
-    node* nextNode;
-    node* prevNode;
+    node* nextNode = 0;
+    node* prevNode = 0;
 };
-
 
 // linked list class 
 class myLinkedList
@@ -20,8 +20,8 @@ class myLinkedList
     // private member variable
     private:
         node* head;
-        node* tail;
         node* cursor;
+        node* headNode;
 
     // public member function declaration 
     public: 
@@ -29,41 +29,41 @@ class myLinkedList
         myLinkedList()
         {
             head =  NULL;
-            tail = NULL;
             cursor = NULL;
+            headNode = NULL;
         }
-
-        // add back node
-        void addBackNode(char n);
 
         // insert node 
-        void insertNode(node* cursor, char n);
+        void insertNode(char n);
 
         // delete node 
-        void deleteNode(node* cursor);
+        void deleteNode();
 
-        // get head node 
+        void moveCursorLeft()
+        {
+            if(cursor->prevNode != NULL) 
+            {
+                cursor = cursor->prevNode;
+            }
+        }
+
+        void moveCursorRight()
+        {
+            if(cursor->nextNode != NULL)
+            {
+                cursor = cursor->nextNode;
+            }
+        }
+
+        // get head
         node* getHead()
         {
-            return head;
+            return headNode;
         }
 
-        // get tail node 
-        node* getTail()
-        {
-            return tail;
-        }
-
-        // get cursor 
         node* getCursor()
         {
             return cursor;
-        }
-
-        // set cursor 
-        void setCursor(node* pos)
-        {
-            cursor = pos;
         }
 
         // print linked list 
@@ -71,77 +71,83 @@ class myLinkedList
 };
 
 // add back node
-void myLinkedList::addBackNode(char n)
+void myLinkedList::insertNode(char n)
 {
     // make new node 
     node* newNode = new node;
     newNode->data = n;
 
-    // no next node point because this is the last node 
-    newNode->nextNode = NULL;
-
     // if there is no data 
-    if(head == NULL)
+    if(headNode == NULL)
     {
+        headNode = new node;
+        headNode->data = '!';
+
         head = newNode;
-        tail = newNode;
-        cursor = tail->nextNode;
+        head->prevNode = headNode;
+        headNode->nextNode = head;
+        cursor = newNode;
     }
     else
     {
-        // set tail's next node is new node 
-        tail->nextNode = newNode;
-        // set tail  
-        tail = newNode;
-    }
-}
+        // cursor is in the middle 
+        if(cursor->nextNode != NULL)
+        {
+            // if(cursor->prevNode != NULL)
+            // {
+                newNode->nextNode = cursor->nextNode;
+                newNode->prevNode = cursor;
 
-// insert node between two nodes 
-void myLinkedList::insertNode(node* cursor, char n)
-{
-    node* newNode = new node;
-    newNode->data = n;
-
-    if(cursor != head)
-    {
-        newNode->prevNode = cursor->prevNode;
-        cursor->prevNode->nextNode = newNode;
+                cursor->nextNode->prevNode = newNode;
+                cursor->nextNode = newNode;
+                cursor = newNode;   
+            // }
+            // // if cursor is at the head
+            // else
+            // {
+            //     newNode->nextNode = cursor;
+            //     cursor->prevNode = newNode;
+            //     head = newNode;
+            //     cursor = newNode;
+            // }
+        }
+        // cursor is at the end 
+        else
+        {
+            newNode->prevNode = cursor;
+            cursor->nextNode = newNode;
+            cursor = newNode;
+        }
     }
-    else
-    {
-        newNode->prevNode = NULL;
-        head = newNode;
-    }
-
-    newNode->nextNode = cursor;
-    cursor->prevNode = newNode;
 }
 
 // delete node 
-void myLinkedList::deleteNode(node* cursor)
+void myLinkedList::deleteNode()
 {
-    // get node to be deleted 
-    node* deletedNode = cursor->prevNode;
-
-    // cursor is not head 
-    if(deletedNode != NULL)
+    if(cursor == headNode)
     {
-        // deleted node is not head 
-        if(deletedNode != head)
-        {
-            // link prev node to cursor 
-            deletedNode->prevNode->nextNode = cursor;
-        }
-        else
-        {
-            head = cursor;
-        }
-
-        cursor->prevNode = deletedNode->prevNode;
-        
-        // delete node 
-        delete deletedNode;
+        return;
     }
+
+    node* deletedNode = cursor;
+    cursor = deletedNode->prevNode;
+
+    // cursor is in the middle 
+    if(deletedNode->nextNode != NULL)
+    {
+        deletedNode->prevNode->nextNode = deletedNode->nextNode;
+        deletedNode->nextNode->prevNode = deletedNode->prevNode;
+    }
+    // cursor is at the end 
+    else
+    {
+        deletedNode->prevNode->nextNode = nullptr;
+    }
+
+    // cout << "deleted node is " << deletedNode->data << '\n';
+
+    // delete node 
+    delete deletedNode;
 }
 
 // print linked list 
@@ -170,7 +176,7 @@ int main()
 
     for(int idx = 0; idx < input.size(); idx++)
     {
-        myLL.addBackNode(input[idx]);
+        myLL.insertNode(input[idx]);
     }
 
     cin >> testCase; 
@@ -181,33 +187,30 @@ int main()
         
         switch(command)
         {
-            case 'L': 
-                if(myLL.getCursor() != myLL.getHead())
-                {
-                    myLL.setCursor(myLL.getCursor()->prevNode);
-                }
+            case 'L':   
+                myLL.moveCursorLeft();
                 break;
 
             case 'D':
-                if(myLL.getCursor() != myLL.getTail())
-                {
-                    myLL.setCursor(myLL.getCursor()->nextNode);
-                }
+                myLL.moveCursorRight();
                 break;
             
             case 'B':
-                myLL.deleteNode(myLL.getCursor());
+                myLL.deleteNode();
                 break;
             
             case 'P': 
                 cin >> value;
-                myLL.insertNode(myLL.getCursor(), value);
+                myLL.insertNode(value);
                 break;
         }
+
+        // cout << "my cursor is " << myLL.getCursor()->data << '\n';
+        // cout << "my head is " << myLL.getHead()->data << '\n';
     }
 
     // print data 
-    myLL.printNode(myLL.getHead());
+    myLL.printNode(myLL.getHead()->nextNode);
 
     return 0;
 }
