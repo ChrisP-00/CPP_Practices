@@ -174,7 +174,7 @@ int main()
 
     cin >> input; 
 
-    for(int idx = 0; idx < input.size(); idx++)
+    for(int idx = 0; idx < input.length(); idx++)
     {
         myLL.insertNode(input[idx]);
     }
