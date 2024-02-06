@@ -53,12 +53,12 @@ int main()
             // cout << "iter is " << *iter << '\n';
         }
 
-        while(!myList.empty())
-        {   
-            cout << myList.front();
-            myList.pop_front();
+        for(char letter : myList)
+        {
+            cout << letter; 
         }
 
+        myList.clear();
         iter = myList.begin();
 
         cout << '\n';
