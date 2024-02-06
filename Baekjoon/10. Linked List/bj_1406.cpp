@@ -93,23 +93,12 @@ void myLinkedList::insertNode(char n)
         // cursor is in the middle 
         if(cursor->nextNode != NULL)
         {
-            // if(cursor->prevNode != NULL)
-            // {
-                newNode->nextNode = cursor->nextNode;
-                newNode->prevNode = cursor;
+            newNode->nextNode = cursor->nextNode;
+            newNode->prevNode = cursor;
 
-                cursor->nextNode->prevNode = newNode;
-                cursor->nextNode = newNode;
-                cursor = newNode;   
-            // }
-            // // if cursor is at the head
-            // else
-            // {
-            //     newNode->nextNode = cursor;
-            //     cursor->prevNode = newNode;
-            //     head = newNode;
-            //     cursor = newNode;
-            // }
+            cursor->nextNode->prevNode = newNode;
+            cursor->nextNode = newNode;
+            cursor = newNode;   
         }
         // cursor is at the end 
         else
@@ -143,9 +132,6 @@ void myLinkedList::deleteNode()
     {
         deletedNode->prevNode->nextNode = nullptr;
     }
-
-    // cout << "deleted node is " << deletedNode->data << '\n';
-
     // delete node 
     delete deletedNode;
 }
@@ -204,9 +190,6 @@ int main()
                 myLL.insertNode(value);
                 break;
         }
-
-        // cout << "my cursor is " << myLL.getCursor()->data << '\n';
-        // cout << "my head is " << myLL.getHead()->data << '\n';
     }
 
     // print data 
