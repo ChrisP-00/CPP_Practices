@@ -49,8 +49,6 @@ int main()
                 iter = myList.insert(iter, letter);
                 iter++;
             } 
-
-            // cout << "iter is " << *iter << '\n';
         }
 
         for(char letter : myList)
