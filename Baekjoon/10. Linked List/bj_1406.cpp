@@ -81,10 +81,10 @@ void myLinkedList::insertNode(char n)
     if(headNode == NULL)
     {
         headNode = new node;
-        headNode->data = '!';
 
         head = newNode;
         head->prevNode = headNode;
+        
         headNode->nextNode = head;
         cursor = newNode;
     }
