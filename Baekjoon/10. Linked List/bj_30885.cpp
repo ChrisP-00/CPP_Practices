@@ -1,141 +1,129 @@
 #include <iostream>
-#include <queue>
+#include <limits.h>
+#include <list>
 
 using namespace std; 
 
 struct microbe
 {
-    int prev;
-    int next;
+    int idx;
+    int size;
 };
 
 int main()
 {
-    vector<microbe> myMicrobe (5000001);
-    queue<pair<int,int> > myMicrobeQueue;
-    int howMany, microbeSize = 0;
-    int tempPrev = 0;
-    int tempNext = 0; 
-    int totalSize = 0;
+    // first - size, second - initial idx, prev, next 
+    list<microbe> myList;
 
-    cin >> howMany;
+    int microbeIdx, microbeSize, tempPrev, tempNext, totalSize = 0;
 
-    for(int idx = 1; idx <= howMany; idx++)
+    cin >> microbeIdx;
+
+    for(int idx = 1; idx <= microbeIdx; idx++)
     {
         cin >> microbeSize;
 
         totalSize += microbeSize;
 
-        // first == index, second size 
-        myMicrobeQueue.push(make_pair(idx, microbeSize));
+        microbe newMicrobe;
+        newMicrobe.idx = idx;
+        newMicrobe.size = microbeSize;
 
-        myMicrobe[microbeSize].prev = tempPrev;
-        myMicrobe[microbeSize].next = 0;
-
-        myMicrobe[tempPrev].next = microbeSize;
-
-        tempPrev = microbeSize;
+        myList.push_back(newMicrobe);
     }
 
+    list<microbe>::iterator iter = myList.begin();
 
-    while(myMicrobeQueue.size() != 1)
+    // while(iter != myList.end())
+    // {
+    //     microbe temp = *iter;
+    //     cout << temp.idx << "번째 미생물 " << iter->size << '\n';
+    //     iter++;
+    // }
+
+    // iter = myList.begin();
+
+    cout << "================" << '\n';
+
+    while(myList.size() > 1)
     {   
-        // index
-        howMany = myMicrobeQueue.front().first;
-        // microbe size 
-        microbeSize = myMicrobeQueue.front().second;
+        int next, prev = INT_MAX;
+        microbe cur = *iter;
 
-        tempPrev = myMicrobe[microbeSize].prev;
-        tempNext = myMicrobe[microbeSize].next;
+        cout << "현재 미생물은 " << cur.size << '\n';
 
-        cout << microbeSize <<" 크기의 미생물 위치는 " << howMany << '\n';
-
-        if(tempPrev == 0)
+        if(iter == myList.begin())
         {
-            // if prev microbe does not exist 
-            if(microbeSize > tempNext)
-            {
-                cout << "전이 없음 다음 껄 먹었다 " << '\n';
-               
-                microbeSize += tempNext;
-
-                // pop next microbe from queue
-                if(myMicrobeQueue.size() > 1)
-                {
-                    // push microbe back to queue
-                    myMicrobeQueue.push(make_pair(howMany, microbeSize));
-                    myMicrobeQueue.pop();
-
-                    cout << "잡아 먹고 다음 미생물은? " << myMicrobeQueue.front().second << '\n';
-                    myMicrobe[myMicrobeQueue.front().second].prev = 0;
-                }
-            }
+            ++iter;
+            next = iter->size;
+            cout << "다음 미생물은? " << next << '\n';
+            --iter;
         }
-        else if(tempNext == 0)
+        else if(++iter == myList.end())
         {
-            // if next microbe does not exist 
-            if(microbeSize > tempPrev)
-            {
-                cout << "다음이 없음 이전 껄 먹었다 " << '\n';
-                
-                microbeSize += tempPrev;
-
-                // pop next microbe from queue
-                if(myMicrobeQueue.size() > 1)
-                {
-                    // push microbe back to queue
-                    myMicrobeQueue.push(make_pair(howMany, microbeSize));
-                    cout << "잡아 먹고 다음 미생물은? " << myMicrobe[microbeSize].next << '\n';
-                    myMicrobe[myMicrobe[microbeSize].next].prev = 0;
-                }
-            }
-        }
-
-        // both next and prev exist 
-        else if(tempPrev != 0 && tempNext != 0)
-        {
-            if(tempNext > tempPrev && microbeSize > tempPrev)
-            {
-                cout << "둘중에 이전 껄 먹었다 " << '\n';
-                
-                microbeSize += tempPrev;
-
-                // pop next microbe from queue
-                if(myMicrobeQueue.size() > 1)
-                {
-                    // push microbe back to queue
-                    myMicrobeQueue.push(make_pair(howMany, microbeSize));
-                    cout << "잡아 먹고 다음 미생물은? " << myMicrobe[microbeSize].next << '\n';
-                    myMicrobe[myMicrobe[microbeSize].next].prev = 0;
-                }
-            }
-            else if(tempPrev > tempNext && microbeSize > tempNext)   
-            {
-                cout << "둘중에 다음 껄 먹었다 " << '\n';
-
-                // pop next microbe from queue
-                if(myMicrobeQueue.size() > 1)
-                {
-                    // push microbe back to queue
-                    myMicrobeQueue.push(make_pair(howMany, microbeSize));
-                    myMicrobeQueue.pop();
-                    cout << "잡아 먹고 다음 미생물은? " << myMicrobeQueue.front().second << '\n';
-                    myMicrobe[myMicrobeQueue.front().second].prev = 0;
-                }
-            }
+            --iter;
+            --iter;
+            prev = iter->size;
+            cout << "이전 미생물은? " << prev << '\n';
+            ++iter;
         }
         else
         {
-            // push microbe back to queue
-            myMicrobeQueue.push(myMicrobeQueue.front());
-            myMicrobeQueue.pop();
+            next = iter->size;
+            cout << "중간! 다음 미생물은? " << next << '\n';
+            --iter;
+            --iter;
+            prev = iter->size;
+            cout << "중간! 이전 미생물은? " << prev << '\n';
+            ++iter;
         }
-        
-        cout << "지금 미생물 위치는? " << howMany << '\n';
+
+        if(prev <= cur.size)
+        {
+            cur.size += prev;
+            --iter;
+            cout << "이전걸 먹었다 먹힌 미생물은 " << iter->size << '\n';
+            iter = myList.erase(iter);
+            cout << "다음 미생물은 " << iter->size << '\n';
+        }
+        if(next <= cur.size)
+        {
+            cur.size += next;
+            ++iter;
+            cout << "다음걸 먹었다 먹힌 미생물은 " << iter->size << '\n';
+
+            if(iter != myList.end())
+            {               
+                iter = myList.erase(iter);
+                cout << "다음 미생물은 " << iter->size << '\n';
+            }
+            else
+            {
+                iter = myList.erase(iter);
+                cout << "다음 미생물은 " << iter->size << '\n';
+                iter = myList.begin();
+            }
+        }
+
+        cout << "현재 미생물 사이즈는 " << cur.size << '\n';
+        myList.insert(iter, cur);
+
+        if(iter != myList.end())
+        {
+            cout << "다음 포인터!" << '\n';
+            ++iter;
+        }
+        else
+        {
+            cout << "마지막 포인터!" << '\n';
+            iter = myList.begin();
+        }
+
+        cout << "================" << '\n';
     }
 
     cout << totalSize << '\n';
-    cout << howMany;
+    cout << microbeIdx;
 
     return 0;
 }
