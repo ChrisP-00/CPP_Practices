@@ -45,12 +45,12 @@ int main()
 
     cout << "================" << '\n';
 
-    while(myList.size() > 1)
+    while(iter != myList.end())
     {   
-        int next, prev = INT_MAX;
+        int next = INT_MAX, prev = INT_MAX;
         microbe cur = *iter;
 
-        cout << "현재 미생물은 " << cur.size << '\n';
+        cout << "현재 " << cur.idx << "번째 " << "미생물은 " << cur.size << '\n';
 
         if(iter == myList.begin())
         {
@@ -78,6 +78,8 @@ int main()
             ++iter;
         }
 
+        cout << "이전 ? " << prev << " 다음은 " << next << '\n';
+  
         if(prev <= cur.size)
         {
             cur.size += prev;
@@ -92,32 +94,13 @@ int main()
             ++iter;
             cout << "다음걸 먹었다 먹힌 미생물은 " << iter->size << '\n';
 
-            if(iter != myList.end())
-            {               
-                iter = myList.erase(iter);
-                cout << "다음 미생물은 " << iter->size << '\n';
-            }
-            else
-            {
-                iter = myList.erase(iter);
-                cout << "다음 미생물은 " << iter->size << '\n';
-                iter = myList.begin();
-            }
+            iter = myList.erase(iter);
+            cout << "다음 미생물은 " << iter->size << '\n';
         }
 
         cout << "현재 미생물 사이즈는 " << cur.size << '\n';
         myList.insert(iter, cur);
 
-        if(iter != myList.end())
-        {
-            cout << "다음 포인터!" << '\n';
-            ++iter;
-        }
-        else
-        {
-            cout << "마지막 포인터!" << '\n';
-            iter = myList.begin();
-        }
 
         cout << "================" << '\n';
     }
