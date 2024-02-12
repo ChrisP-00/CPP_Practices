@@ -1,112 +1,93 @@
 #include <iostream>
-#include <limits.h>
-#include <list>
+#include <queue>
 
-using namespace std; 
+using namespace std;
 
-struct microbe
+struct node
 {
-    int idx;
-    int size;
+    int idx; 
+    int size; 
+    int nextIdx;
+    int prevIdx;
 };
 
 int main()
 {
-    // first - size, second - initial idx, prev, next 
-    list<microbe> myList;
+    vector<node> myList (500003);
+    deque<int> myDeque;
+    const int maxValue = 500002;
 
-    int microbeIdx, microbeSize, tempPrev, tempNext, totalSize = 0;
+    int microbeIdx, tempSize, tempPrevSize, tempNextSize, tempIdx = 0;
+    int tempNextIdx = maxValue, tempPrevIdx = maxValue;
+    int totalSize = 0;
 
     cin >> microbeIdx;
 
     for(int idx = 1; idx <= microbeIdx; idx++)
     {
-        cin >> microbeSize;
+        cin >> tempSize;
 
-        totalSize += microbeSize;
+        totalSize += tempSize;
 
-        microbe newMicrobe;
-        newMicrobe.idx = idx;
-        newMicrobe.size = microbeSize;
+        myDeque.push_back(idx);
 
-        myList.push_back(newMicrobe);
+        myList[idx].idx = idx;
+        myList[idx].size = tempSize;
+        myList[idx].prevIdx = tempPrevIdx;
+        myList[idx].nextIdx = tempNextIdx;
+
+        myList[tempPrevIdx].nextIdx = idx;
+
+        tempPrevIdx = idx;
     }
+    
+    // connect head to tail 
+    myList[tempPrevIdx].nextIdx = maxValue;
+    myList[maxValue].size = maxValue;
 
-    list<microbe>::iterator iter = myList.begin();
+    while(myDeque.size() != 1)
+    {
+        int sum = 0;
 
-    // while(iter != myList.end())
-    // {
-    //     microbe temp = *iter;
-    //     cout << temp.idx << "번째 미생물 " << iter->size << '\n';
-    //     iter++;
-    // }
+        microbeIdx = myDeque.front();
+        myDeque.pop_front();
 
-    // iter = myList.begin();
+        tempIdx = myList[microbeIdx].idx;
+        tempSize = myList[microbeIdx].size;
+        tempNextIdx = myList[microbeIdx].nextIdx;
+        tempPrevIdx = myList[microbeIdx].prevIdx;
 
-    cout << "================" << '\n';
+        tempPrevSize = myList[tempPrevIdx].size;
+        tempNextSize = myList[tempNextIdx].size;
 
-    while(iter != myList.end())
-    {   
-        int next = INT_MAX, prev = INT_MAX;
-        microbe cur = *iter;
-
-        cout << "현재 " << cur.idx << "번째 " << "미생물은 " << cur.size << '\n';
-
-        if(iter == myList.begin())
+        if(tempPrevSize <= tempSize)
         {
-            ++iter;
-            next = iter->size;
-            cout << "다음 미생물은? " << next << '\n';
-            --iter;
+            sum += tempPrevSize;
+            myDeque.pop_back();
+
+            myList[myList[tempPrevIdx].prevIdx].nextIdx = microbeIdx;
+            myList[microbeIdx].prevIdx = myList[tempPrevIdx].prevIdx;
+
+            myList[microbeIdx].size = tempSize + sum;
         }
-        else if(++iter == myList.end())
+        if(tempNextSize <= tempSize)
         {
-            --iter;
-            --iter;
-            prev = iter->size;
-            cout << "이전 미생물은? " << prev << '\n';
-            ++iter;
-        }
-        else
-        {
-            next = iter->size;
-            cout << "중간! 다음 미생물은? " << next << '\n';
-            --iter;
-            --iter;
-            prev = iter->size;
-            cout << "중간! 이전 미생물은? " << prev << '\n';
-            ++iter;
+            sum += tempNextSize;
+
+            myDeque.pop_front();    // pop nextIdx node 
+
+            myList[tempPrevIdx].nextIdx = microbeIdx;
+            myList[myList[tempNextIdx].nextIdx].prevIdx = microbeIdx;
+            myList[microbeIdx].nextIdx = myList[tempNextIdx].nextIdx;
+
+            myList[microbeIdx].size = tempSize + sum;
         }
 
-        cout << "이전 ? " << prev << " 다음은 " << next << '\n';
-  
-        if(prev <= cur.size)
-        {
-            cur.size += prev;
-            --iter;
-            cout << "이전걸 먹었다 먹힌 미생물은 " << iter->size << '\n';
-            iter = myList.erase(iter);
-            cout << "다음 미생물은 " << iter->size << '\n';
-        }
-        if(next <= cur.size)
-        {
-            cur.size += next;
-            ++iter;
-            cout << "다음걸 먹었다 먹힌 미생물은 " << iter->size << '\n';
-
-            iter = myList.erase(iter);
-            cout << "다음 미생물은 " << iter->size << '\n';
-        }
-
-        cout << "현재 미생물 사이즈는 " << cur.size << '\n';
-        myList.insert(iter, cur);
-
-
-        cout << "================" << '\n';
+        myDeque.push_back(microbeIdx);
     }
 
     cout << totalSize << '\n';
-    cout << microbeIdx;
+    cout << myDeque.front();
 
     return 0;
 }

@@ -7,86 +7,129 @@ struct node
 {
     int idx; 
     int size; 
-    
-    int next;
-    int prev;
+    int nextIdx;
+    int prevIdx;
 };
 
 int main()
 {
-    vector<node> myList (600000);
+    vector<node> myList (500003);
     deque<int> myDeque;
     const int maxValue = 500002;
 
-    int microbeIdx, microbeSize, totalSize, origin = 0;
-    int tempNext = maxValue, tempPrev = maxValue;
+    int microbeIdx, tempSize, tempPrevSize, tempNextSize, tempIdx = 0;
+    int tempNextIdx = maxValue, tempPrevIdx = maxValue;
+    int totalSize = 0;
+
+
+    cout << totalSize << " 총 미생물 \n";
 
     cin >> microbeIdx;
 
     for(int idx = 1; idx <= microbeIdx; idx++)
     {
-        cin >> microbeSize;
+        cin >> tempSize;
 
-        totalSize += microbeSize;
+        totalSize += tempSize;
 
-        myDeque.push_back(microbeSize);
+        myDeque.push_back(idx);
 
-        myList[microbeSize].idx = idx;
-        myList[microbeSize].size = microbeSize;
-        myList[microbeSize].prev = tempPrev;
-        myList[microbeSize].next = tempNext;
+        myList[idx].idx = idx;
+        myList[idx].size = tempSize;
+        myList[idx].prevIdx = tempPrevIdx;
+        myList[idx].nextIdx = tempNextIdx;
 
-        myList[tempPrev].next = microbeSize;
+        myList[tempPrevIdx].nextIdx = idx;
 
-        tempPrev = microbeSize;
+        cout << tempPrevIdx << "의 다음은 " << myList[tempPrevIdx].nextIdx << '\n';
+
+        tempPrevIdx = idx;
+    }
+    
+    // connect head to tail 
+    myList[tempPrevIdx].nextIdx = maxValue;
+    myList[maxValue].size = maxValue;
+
+    cout << tempPrevIdx << "의 다음은 " << myList[tempPrevIdx].nextIdx << '\n';
+
+
+    for(int idx = 1; idx <= microbeIdx; idx++)
+    {
+        cout << "=== 덱의 인덱스 " << myDeque.front() << " ===\n";
+
+        myDeque.push_back(myDeque.front());
+        myDeque.pop_front();
+
+        cout << idx << "번째 미생물은 " << myList[idx].size << '\n';
+        cout << "이전은 " << myList[idx].prevIdx << " 다음은 " << myList[idx].nextIdx << '\n';
     }
 
-    while(!myDeque.empty())
+
+    while(myDeque.size() != 1)
     {
         int sum = 0;
+
         microbeIdx = myDeque.front();
+        myDeque.pop_front();
 
-        microbeSize = myList[microbeIdx].size;
-        tempNext = myList[microbeIdx].next;
-        tempPrev = myList[microbeIdx].prev;
+        tempIdx = myList[microbeIdx].idx;
+        tempSize = myList[microbeIdx].size;
+        tempNextIdx = myList[microbeIdx].nextIdx;
+        tempPrevIdx = myList[microbeIdx].prevIdx;
 
-        cout << "현재 미생물은 " << microbeSize << '\n';
+        tempPrevSize = myList[tempPrevIdx].size;
+        tempNextSize = myList[tempNextIdx].size;
 
-        if(tempPrev <= microbeSize)
+        cout << "============================\n";
+        cout << "현재 인덱스는 " << microbeIdx << '\n';
+        cout << "현재 미생물 크기는 " << tempSize << '\n';
+
+        if(tempPrevSize <= tempSize)
         {
-            sum += tempPrev;
+            sum += tempPrevSize;
             myDeque.pop_back();
 
-            myList[microbeIdx].prev = myList[tempPrev].prev;
-            myList[myList[tempPrev].prev].next = microbeIdx;
-            cout << "이전 미생물 냠냠 " << tempPrev << '\n';
+            cout << "이전 미생물 냠냠 " << tempPrevSize << " 지금 사이즈는 " << tempSize + sum << '\n';
+
+            myList[myList[tempPrevIdx].prevIdx].nextIdx = microbeIdx;
+            myList[microbeIdx].prevIdx = myList[tempPrevIdx].prevIdx;
+
+            myList[microbeIdx].size = tempSize + sum;
+
+            cout << microbeIdx << " 의 이전 미생물은 " <<  myList[microbeIdx].prevIdx << "/ 다음 미생물은 " << myList[microbeIdx].nextIdx << '\n';
+
         }
-        if(tempNext <= microbeSize)
+        if(tempNextSize <= tempSize)
         {
-            sum += tempNext;
+            sum += tempNextSize;
 
-            myDeque.push_back(myDeque.front());
-            myDeque.pop_front();
+            myDeque.pop_front();    // pop nextIdx node 
 
-            myDeque.pop_front();
+            cout << "다음 미생물 냠냠 " << tempNextSize << " 지금 사이즈는 " << tempSize + sum << '\n';
 
-            myList[microbeIdx].next = myList[tempNext].next;
-            myList[myList[tempNext].next].prev = microbeIdx;
+            myList[tempPrevIdx].nextIdx = microbeIdx;
+            myList[myList[tempNextIdx].nextIdx].prevIdx = microbeIdx;
+            myList[microbeIdx].nextIdx = myList[tempNextIdx].nextIdx;
 
-            cout << "다음 미생물 냠냠 " << tempNext << '\n';
+            myList[microbeIdx].size = tempSize + sum;
+
+            cout << microbeIdx << " 의 이전 미생물은 " <<  myList[microbeIdx].prevIdx << "/ 다음 미생물은 " << myList[microbeIdx].nextIdx << '\n';
         }
         else
         {
-            myDeque.push_back(myDeque.front());
-            myDeque.pop_front();
+            cout << "오우 먹을게 없어 다음으로..'\n";
         }
 
-        myList[microbeIdx].size += sum;
-        origin = myList[microbeIdx].idx;
+        myDeque.push_back(microbeIdx);
+
+        cout << myList[microbeIdx].idx << "위치 현재 미생물 크기는 " << myList[microbeIdx].size << '\n';
+        cout << "이전 미생물은 " <<  myList[microbeIdx].prevIdx << " 다음 미생물은 " << myList[microbeIdx].nextIdx << '\n';
+        cout << "다음 미생물의 이전 인덱스는 " << myList[myList[microbeIdx].nextIdx].prevIdx << " // 사이즈는 " << myList[myList[myList[microbeIdx].nextIdx].prevIdx].size << '\n'; 
     }
 
+    cout << "============================\n";
     cout << totalSize << '\n';
-    cout << origin;
+    cout << myDeque.front();
 
     return 0;
 }
