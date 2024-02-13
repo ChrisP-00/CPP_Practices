@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits.h>
 #include <queue>
 
 using namespace std;
@@ -6,20 +7,22 @@ using namespace std;
 struct node
 {
     int idx; 
-    int size; 
-    int nextIdx;
-    int prevIdx;
+    long long size; 
+    long long nextIdx;
+    long long prevIdx;
 };
 
 int main()
 {
-    vector<node> myList (500003);
+    ios::sync_with_stdio(false), cin.tie(0);
+    
+    vector<node> myList (500001);
     deque<int> myDeque;
-    const int maxValue = 500002;
+    const long long maxValue = LLONG_MAX;
 
-    int microbeIdx, tempSize, tempPrevSize, tempNextSize, tempIdx = 0;
-    int tempNextIdx = maxValue, tempPrevIdx = maxValue;
-    int totalSize = 0;
+    long long microbeIdx, tempSize, tempPrevSize, tempNextSize, tempIdx = 0;
+    long long tempNextIdx, tempPrevIdx = 0;
+    long long totalSize = 0;
 
     cin >> microbeIdx;
 
@@ -42,12 +45,12 @@ int main()
     }
     
     // connect head to tail 
-    myList[tempPrevIdx].nextIdx = maxValue;
-    myList[maxValue].size = maxValue;
+    myList[tempPrevIdx].nextIdx = 0;
+    myList[0].size = maxValue;
 
     while(myDeque.size() != 1)
     {
-        int sum = 0;
+        long long sum = 0;
 
         microbeIdx = myDeque.front();
         myDeque.pop_front();
@@ -64,7 +67,7 @@ int main()
         {
             sum += tempPrevSize;
             myDeque.pop_back();
-
+            
             myList[myList[tempPrevIdx].prevIdx].nextIdx = microbeIdx;
             myList[microbeIdx].prevIdx = myList[tempPrevIdx].prevIdx;
 
@@ -74,7 +77,7 @@ int main()
         {
             sum += tempNextSize;
 
-            myDeque.pop_front();    // pop nextIdx node 
+            myDeque.pop_front();
 
             myList[tempPrevIdx].nextIdx = microbeIdx;
             myList[myList[tempNextIdx].nextIdx].prevIdx = microbeIdx;
@@ -83,10 +86,10 @@ int main()
             myList[microbeIdx].size = tempSize + sum;
         }
 
-        myDeque.push_back(microbeIdx);
-    }
+        myDeque.push_back(microbeIdx); 
+        }
 
-    cout << totalSize << '\n';
+    cout << myList[myDeque.front()].size << '\n';
     cout << myDeque.front();
 
     return 0;
