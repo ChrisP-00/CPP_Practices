@@ -1,4 +1,14 @@
 #include <iostream> 
+#include <string>
+
+using namespace std;
+
+struct node 
+{
+    string data; 
+    node* left; 
+    node* right;
+}
 
 int main()
 {
