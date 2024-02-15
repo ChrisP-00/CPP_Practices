@@ -12,8 +12,15 @@ struct node
 
 int main()
 {
-    int N = 0;
+    int n = 0;
     string food = "";
+
+    cin >> n;
+
+    while(n--)
+    {
+        cin >> food;
+    }
 
     return 0;
 }
