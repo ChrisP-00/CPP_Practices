@@ -8,18 +8,46 @@ struct node
     string data; 
     node* left; 
     node* right;
+};
+
+node* intsertNode(node* rootNode, string data)
+{
+    node* newNode = new node;
+    newNode.data = data;
+
+    if(rootNode->left == NULL)
+    {
+        rootNode.left = newNode;
+    }
+    else
+    {
+        
+    }
+
+
+
+
+
+    return newNode;
 }
+
+
+
 
 int main()
 {
-    int n = 0;
+    int n, k = 0;
     string food = "";
+    const string treeLevel = "--";
 
     cin >> n;
 
     while(n--)
     {
-        cin >> food;
+        while(k--)
+        {
+            cin >> food;
+        }
     }
 
     return 0;
