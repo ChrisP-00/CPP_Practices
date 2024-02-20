@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <string>
+#include <queue>
 
 using namespace std;
 
@@ -12,23 +13,27 @@ struct node
 
 node* intsertNode(node* rootNode, string data)
 {
+    priority_queue<node> myQueue;
+
     node* newNode = new node;
     newNode.data = data;
 
-    if(rootNode->left == NULL)
+    myQueue.push(newNode);
+
+    while(!myQueue.empty())
     {
-        rootNode.left = newNode;
+        node* tempNode = myQueue.front();
+        myQueue.pop();
+
+        if(rootNode->left.data < tempNode->data)
+        {
+            
+        }
+
+
     }
-    else
-    {
-        
-    }
 
-
-
-
-
-    return newNode;
+    return rootNode;
 }
 
 
