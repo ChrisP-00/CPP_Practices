@@ -27,10 +27,6 @@ node* intsertNode(node* rootNode, string data)
 
         if(rootNode->left.data < tempNode->data)
         {
-
-
-
-
             
         }
 
