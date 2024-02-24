@@ -2,91 +2,49 @@
 
 using namespace std; 
 
-struct TRIE
+const int Num_Alphabets = 26;
+
+// convert char to int 
+int toIndex(char ch) 
+{ 
+    return ch - 'A';
+}
+
+struct TrieNode
 {
-    bool Finish;
-    TRIE *Node[26];
-    TRIE()
+    TrieNode* children[Num_Alphabets];
+    bool isEnd;
+
+    TrieNoe() : chilrend(), isEnd(false);
+
+    void Insert(string& key, int index)
     {
-        Finish = false;
-        for(int idx = 0; idx < 26; idx++)
+        if(index == key.length() - 1)
         {
-            Node[idx] = NULL;
+            isEnd = true;
         }
-    }
-
-
-    void Insert(char *str)
-    {
-        if(*str == NULL)
+        else
         {
-            Finish = true;
-            return;
-        }
-        int Cur = *str - 'A';
-
-        if(Node[Cur] == NULL)
-        {
-            Node[Cur] = new TRIE();
-        }
-        Node[Cur]->Insert(str + 1);
-    }
-
-    bool Find(char *str)
-    {
-        if(*str == NULL)
-        {
-            if(Finish == true) 
+            int next = toIndex(key[index]);
+            if(children[next] = nullptr)
             {
-                return true;
+                children[next] = new Trienode;
             }
+            
+            children[next]->Insert(key, index + 1);
         }
-        int Cur = *str - 'A';
-        if(Node[Cur] == NULL)
-        {
-            return false;
-        }
-
-        return Node[Cur]->Find(str + 1);
     }
-}
 
-void IsSorting(TRIE *N, char str[], int Idx)
-{
-    if(N->Finish == true)
+    void PrintTrie(string& key, int depth)
     {
-        cout << str << '\n';
-    }
 
-    for(int i = 0; i < 26; i++)
-    {
-        if(N->Node[i] != NULL)
-        {
-            char C = i + 'A';
-            str[Idx] = C;
-            N->IsSorting(N->Node[i], str, Idx + 1);
-        }
     }
-}
+};
 
 
 int main()
 {
-    TRIE *Root = new TRIE();
-    char *String[5];
-    String[0] = "ZYX";
-    String[1] = "BCG";
-    String[2] = "ABC";
-    String[3] = "BDE";
-    String[4] = "ABCD";
 
-    for(int i = 0; i < 26; i++)
-    {
-        if(Root->Node[i] != NULL)
-        {
-            char str[5] = {NULL};
-            str[0] = i + 'A';
-            Root->IsSorting(Root->Node[i], str, 1);
-        }
-    }
+
+    return 0;
 }
