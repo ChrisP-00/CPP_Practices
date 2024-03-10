@@ -7,6 +7,9 @@
 # Unignore all dirs
 !*/
 
+# Ignore temp code runner file 
+*tempCodeRunnerFile*
+
 ### Above combination will ignore all files without extension ###
 
 
@@ -100,4 +103,3 @@ Temporary Items
 *.exe
 *.out
 *.app
-
