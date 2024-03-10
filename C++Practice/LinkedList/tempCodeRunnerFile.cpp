@@ -1,2 +1,0 @@
-
-        void printNode(node* headNode);
