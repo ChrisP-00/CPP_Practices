@@ -14,7 +14,7 @@ int main()
     {
         string str = to_string(num);
 
-        for(int idx = 0; idx < str.length(); idx++)
+        for(int idx = 0; idx < str.size(); idx++)
         {
             if(str[idx] == d) count++;
         }
