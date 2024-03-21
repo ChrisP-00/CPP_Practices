@@ -27,12 +27,14 @@ void collectProblem(int idxP, int minNum, int maxNum, int ttl)
         }
     }
 
+    // 시작 인덱스부터 다음 인덱스들의 문제들을 확인한다. 
     for(int idx = idxP; idx < n; idx++)
     {
          if(checkedNums[idx]) continue;
 
         checkedNums[idx] = true;
-        collectProblem(idx, min(minNum, problems[idx]), max(maxNum, problems[idx]), ttl + problems[idx]);
+        // 현재 확인한 인덱스
+        collectProblem(idx + 1, min(minNum, problems[idx]), max(maxNum, problems[idx]), ttl + problems[idx]);
         checkedNums[idx] = false;
     }
 }
@@ -48,11 +50,9 @@ int main()
     {
         cin >> problems[idx];
     }   
-
-    
+   
     collectProblem(0, INT_MAX, 0, 0);
  
-
     cout << cnt;
 
     return 0;
