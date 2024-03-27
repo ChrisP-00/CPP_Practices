@@ -5,7 +5,7 @@ using namespace std;
 
 int n, m; 
 int arr[9];
-int isChecked[9];
+bool isChecked[9];
 
 void backTracking(int idx)
 {
