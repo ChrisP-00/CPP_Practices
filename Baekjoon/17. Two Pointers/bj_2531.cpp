@@ -36,14 +36,7 @@ int main()
         hasEaten[sushi[idx]]++;
     } 
 
-    if(hasEaten[c] == 0) 
-    {
-        ans = cnt + 1;
-    }
-    else 
-    {
-        ans = cnt;
-    }
+    ans = !hasEaten[c] ? cnt + 1 : cnt;
 
     int en = 0;
 
@@ -55,32 +48,22 @@ int main()
         en = (st + k - 1) % n; 
 
         // 오른쪽으로 옮겼을 때 처음 먹는 종류이다
-        if(hasEaten[sushi[en]] == 0)
-        {
+        if(!hasEaten[sushi[en]]) 
             cnt++;
-        }
+        
         // 먹은 초밥 종류의 누적값을 올림 
         hasEaten[sushi[en]]++;
         
         // st가 옮김에 따라 먹은 초밥 종류의 누적값을 내림
         hasEaten[sushi[st - 1]]--;
         // 누적된 먹은 초밥 종류가 0이라면 전체 합에서 값을 내림
-        if(hasEaten[sushi[st - 1]] == 0) 
-        {
+        if(!hasEaten[sushi[st - 1]]) 
             cnt--;
-        }
-
+    
         if(ans <= cnt)
         {
-            if(hasEaten[c] == 0) 
-                ans = cnt + 1;
-            else 
-            {
-                ans = cnt;
-            }
+            ans = !hasEaten[c] ? cnt + 1 : cnt;
         }
-
-        cout << "st: " << st << " ans: " << ans << '\n';
     }
     
     cout << ans;
