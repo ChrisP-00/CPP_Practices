@@ -15,7 +15,6 @@ bool isFinished()
             if (map[y][x] == 0) return 0;
         }
     }
-
     return 1;
 }
 
@@ -47,7 +46,7 @@ bool isSudoku(int y, int x, int num)
 
 
 // idx. y, x
-bool sudoku(int y, int x)
+bool sudoku(int y)
 {
     for (int yi = y; yi < 9; ++yi)
     {
@@ -60,7 +59,7 @@ bool sudoku(int y, int x)
                 if (isSudoku(yi, xi, num))
                 {
                     map[yi][xi] = num;
-                    sudoku(yi, xi);
+                    sudoku(yi);
                     if (isFinished()) return 0;
 
                     map[yi][xi] = 0;
@@ -76,7 +75,6 @@ bool sudoku(int y, int x)
 
 int main()
 {
-
     for(int y = 0; y < 9; ++y)
     {
         string nums;
@@ -88,8 +86,8 @@ int main()
         }
     }
 
-    sudoku(0,0);
-    
+    sudoku(0);
+
     for(int y = 0; y < 9; ++y)
     {
         for(int x = 0; x < 9; ++x)
