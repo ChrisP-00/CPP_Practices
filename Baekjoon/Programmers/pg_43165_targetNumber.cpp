@@ -9,16 +9,12 @@ int answer = 0;
 class SearchTarget
 {
     public : 
-    // int idx;
-    // int result;
     int target;
     vector<int> *numbers;
 
     SearchTarget(vector<int> *numbers, int target)
     {
         this->numbers = numbers;
-        // this->idx = idx;
-        // this->result = result;
         this->target = target; 
     }
  
