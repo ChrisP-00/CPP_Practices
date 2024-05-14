@@ -31,7 +31,6 @@ void phonebook::checkingNumbers(vector<string> numbers)
     }
 }
 
-
 bool solution(vector<string> phone_book)
 {
     phonebook mypb;
@@ -39,8 +38,6 @@ bool solution(vector<string> phone_book)
 
     return mypb.getAnswer();
 }
-
-
 
 int main()
 {
