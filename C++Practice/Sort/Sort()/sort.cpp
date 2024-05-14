@@ -32,12 +32,10 @@ int main()
     cout << "not sorted yet!\n";
     print(myVector);
 
-
     sort(myVector.begin(), myVector.end());
 
     cout << "\ndefault sort\n";
     print(myVector);
-
 
     sort(myVector.begin(), myVector.end(), asc_num);
 
