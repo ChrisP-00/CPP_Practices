@@ -1,6 +1,6 @@
 #include <iostream>
 #include <limits.h>
-#include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -8,8 +8,8 @@ struct node
 {
     int idx; 
     long long size; 
-    long long nextIdx;
-    long long prevIdx;
+    int nextIdx;
+    int prevIdx;
 };
 
 int main()
@@ -20,9 +20,8 @@ int main()
     deque<int> myDeque;
     const long long maxValue = LLONG_MAX;
 
-    long long microbeIdx, tempSize, tempPrevSize, tempNextSize, tempIdx = 0;
-    long long tempNextIdx, tempPrevIdx = 0;
-    long long totalSize = 0;
+    int microbeIdx,  tempIdx, tempNextIdx, tempPrevIdx = 0;
+    long long tempSize, tempPrevSize, tempNextSize, totalSize = 0;
 
     cin >> microbeIdx;
 
