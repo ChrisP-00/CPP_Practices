@@ -1,70 +1,50 @@
-#include <iostream>
-#include <algorithm> 
-
-using namespace std; 
-
 #include <string>
 #include <vector>
 #include <set> 
 #include <algorithm> 
-#include <cmath> 
+#include <cmath>
 
 using namespace std;
 
+set<int> mySet;
+vector<bool> isVisited(7);
+
 bool isPrime(int target)
 {
-    for(int n = 2; n < sqrt(target); ++n)
+    if(target <= 1) return false;
+    for(int n = 2; n <= sqrt(target); ++n)
     {
         if(target % n == 0)
-        {
-            cout << target << "is not PrimeNumber \n";
             return false;
-        }
     }
     return true;
 }
 
-int stringToInt(string nums)
+void DFS(string& numbers, string target)
 {
-    int num = 0;
-    for(char c : nums)
+    if(!target.empty())
     {
-        num = num * 10 + (c - '0');
+        int temp = stoi(target);
+        if(isPrime(temp))
+        {
+            mySet.insert(temp);
+        }
     }
-    return num;
+    
+    for(int idx = 0; idx < numbers.length(); ++idx)
+    {
+        if(isVisited[idx]) continue;
+        
+        isVisited[idx] = true;
+        DFS(numbers, target + numbers[idx]);
+        isVisited[idx] = false;
+    }
 }
 
-int solution(string numbers) {
-    set<int> mySet; 
-    
-    sort(numbers.begin(), numbers.end());
-    
-    do
-    {
-        for(int idx = 1; idx < numbers.length() + 1; ++idx)
-        {
-            string tempString = numbers.substr(0, idx);
-            int tempInt = stringToInt(tempString);
 
-            if(tempInt <= 1) continue;
-            
-            if(isPrime(tempInt))
-            {
-                mySet.insert(tempInt);
-            }    
-        }
-    }while(next_permutation(numbers.begin(), numbers.end()));
-    
+int solution(string numbers) 
+{
+    DFS(numbers, "");
     
     return mySet.size();
-}
-
-int main()
-{
-    string s = "17";
-
-    cout << solution(s);
-
-
-    return 0;
 }
