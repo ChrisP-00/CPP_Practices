@@ -1,3 +1,8 @@
+<a href="https://github.com/devxb/gitanimals">
+  <img src="https://render.gitanimals.org/lines/{ChrisP-00}?pet-id=1" width="1000" height="120"/>
+</a>
+
+
 코린이의 험난한 개발 공부 기록장
 
 *** 1일 1커밋 ***
