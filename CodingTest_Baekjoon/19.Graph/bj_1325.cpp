@@ -35,7 +35,6 @@ int main()
         cin >> com1 >> com2; 
 
         computers[com2].push_back(com1);
-        counter[com1] = 0;
         counter[com2] = 0;
     }
 
